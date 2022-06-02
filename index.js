@@ -4,7 +4,10 @@ const bodyParser = require('body-parser') // Utilizo el modulo de body parser
 const app = express(); // Genero mi aplicación de express simplemente llamando al constructor express()
 const endPoints = require('./app/routers/personas')/*Importo  el modulo(en este caso endPoint) que exporte
  desde la ruta ./app/routers/personas */
+ const cors = require('cors')//Utilizo el módulo de cors
 
+
+app.use(cors());//le damos acceso a nuestro API desde cualquier 'origen'
 
 //Route "Pagina principal" al momento de conectarse al API, con un método GET que el navegador hace por default
 app.get('/', (req, res)=>{
