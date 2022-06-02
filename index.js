@@ -1,22 +1,29 @@
-const express = require('express'); // Utilizo el módulo de node de express
-const path = require('path'); // Utilizo el módulo de node de path
+const express = require('express'); // Utilizo el módulo de express de Node
+const path = require('path'); // Utilizo el módulo path de Node
 const bodyParser = require('body-parser') // Utilizo el modulo de body parser
 const app = express(); // Genero mi aplicación de express simplemente llamando al constructor express()
-const endPoints = require('./API/routers/endPoints-router')
+const endPoints = require('./app/routers/personas')/*Importo  el modulo(en este caso endPoint) que exporte
+ desde la ruta ./app/routers/personas */
 
-//Route
+
+//Route "Pagina principal" al momento de conectarse al API, con un método GET que el navegador hace por default
 app.get('/', (req, res)=>{
     res.send("Bienvenido a mi API");
 })
 
-//Body Parser
+//Middleware
+//Body Parser (Para pasar a json los endpoint tipo post), se ejecuta antes de llegar al siguiente Middleware
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 
- //Middleware  (registra una ruta)
+ //Middleware  (registra una ruta) y ejecuta lo que viene dentro de endPoints
 app.use('/personas', endPoints)
+/*Si tuvieramos otra ruta en nuestra api como por ejemplo '/objetos', debemos crear las respectivas hojas
+de las carpetas controllers y routers con el mismo nombre 'objetos'*/
 
 
-const port = process.env.port || 8080; // constante para nuestro puerto, es un OR para el caso de  desarrollo en algún servicio o desarrollo local 
+/* constante para nuestro puerto, es un una condición OR para el caso de  desarrollo en algún servicio
+ o desarrollo local (nuestro caso) */
+const port = process.env.port || 8080; 
 app.listen(port, () =>console.log(`Escuchando en el puerto ${port}`))
