@@ -14,7 +14,7 @@ const validarDatos = [
      /*Con ayuda de las variables body  y validationResult creadas con 'express-validator',
     validamos que los elementos que viene en el body existan, se llamen de la forma correcta y
     sean del tipo correcto. NOTEN que es necesario que vengan todos los datos para realizar la modificación*/
-    body('id').exists().isNumeric(), 
+    body('id').exists().isNumeric(), // en la definción de nuestro RESTAPI no pedimos el id requerido, esto es porque en nuestra base de datos el id será auto incremental, pero como lo tenemos en un arreglo, nosotros debemos asignarle el id.Mas adelante cuando nos conectamos a la base de datos, este campo desaparecerá
     body('Nombre').exists().isLength({ min: 3 }),
     body('Apellido').exists().isLength({ min: 3 }),
     body('Edad').exists().isNumeric(), 
