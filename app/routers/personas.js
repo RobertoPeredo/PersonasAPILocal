@@ -9,7 +9,7 @@ const {obtenerPersonas, obtenerPersona,añadirPersona,actualizarPersona,eliminar
 const {validarDatos}= require('../validators/personas')
 
 /* ENDPOINTS */
-/*Todas las funciones como por ejemplo obterPersonas, realizan toda su funcionalidad
+/*Todas las funciones como por ejemplo obtenerPersonas, realizan toda su funcionalidad
 en la hoja ../controllers/personas') se hace de esta forma para tener mas control en nuestro código */
 
 
