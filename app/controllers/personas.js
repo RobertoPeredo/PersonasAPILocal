@@ -1,8 +1,5 @@
 const { response } = require('express');
 const { request } = require('express');
-/*Creamos dos 'variables' body y validationResult que son de express-validator, las cuales
-nos ayudarán a realizar las validaciones */
-const { body, validationResult } = require('express-validator');
 
 /* personas es el objeto en donde tenemos nuestra "base de datos local"
 Todos los cambios de post,put,delete, solo funcionan mientras el servidor esta funcionando,
@@ -43,9 +40,7 @@ const obtenerPersonas = [(request, response)=>{
     if(personas.length===0){
         //En caso de estar vacío, mandamos el sig mensaje
         response.status(415).json({error: "No existe  ninguna persona registrada"});
-        
-
-    }
+     }
     else {
         //Sino está vació desplegamos la lista de todas las personas
     response.json(personas)}
@@ -67,47 +62,22 @@ const obtenerPersona =[(request,response)=>{
         Encuentro el id que corresponda al  requerido y lo devuelvo en la response de mi api
         Como mi variable id viene en string con parseInt convertimos a entero id, porque el id 
         dentro del array personas es int*/        
-       response.json(personas.find( persona => persona.id === parseInt(id) ));
-                                                                  } 
+       response.json(personas.find( persona => persona.id === parseInt(id) ));                                                                  } 
     else{
         //Sino existe imprimimos el mensaje
         response.status(410).json({error: "Este id no existe"});
     }
-    
-    
 }]
 
 
 
 //Añadir una nueva persona a la lista
-const añadirPersona = [
-    /*Con ayuda de las variables body  y validationResult creadas con 'express-validator',
-    validamos que los elementos que viene en el body existan, se llamen de la forma correcta y
-    sean del tipo correcto*/
-    body('id').exists().isNumeric(), 
-    body('Nombre').exists().isLength({ min: 3 }),
-    body('Apellido').exists().isLength({ min: 3 }),
-    body('Edad').exists().isNumeric(), 
-    body('Mail').exists().isEmail(), 
-    body('Celular').exists().isNumeric(), 
+const añadirPersona = [(request,response)=>{ 
+/*Todo esto se ejecuta solo si los datos fueron validados. Es decir, validarDatos dentro de
+/validator/personas.js continuó con  next()*/
 
-    
-    (request,response)=>{
 
-     /*En la variable errors guardamos con ayuda de  validationResult los resultados de las validaciones,
-     si se mando mal algún dato, lo guarda en errors, sino errors está vacío */ 
-    const errors = validationResult(request);
-
-    //Si errors NO está vacío,es decir, encontró algún error en la validación
-    if (!errors.isEmpty()) {
-        //manda como respuesta un array con los errores localizados
-        return response.status(400).json({ errors: errors.array() });
-      }
-
-        
-    //Si no encontró ningún error en la validación entonces:
-
-    //Crea una variable tipo objeto llamada nuevaPersona con los datos mandados en el body
+    //Crea una variable tipo objeto, llamada nuevaPersona con los datos mandados en el body
     const nuevaPersona = {
         id: request.body.id,
         Nombre: request.body.Nombre,
@@ -116,8 +86,7 @@ const añadirPersona = [
         Mail: request.body.Mail,
         Celular: request.body.Celular
     }
-
-    //Verifico si el id mandado desde el front ya existe dentro de mi arreglo de personas
+    //Verifico si el id mandado desde la url ya existe dentro de mi arreglo de personas
     if(personas.some( persona => persona.id === parseInt(nuevaPersona.id) )){
         //Si existe, mando el mensaje
         response.status(411).json({error: "Este id ya existe"});
@@ -132,27 +101,12 @@ const añadirPersona = [
 
   
 //Actualizar una nueva persona de la lista
-const actualizarPersona = [
-    /*Con ayuda de las variables body  y validationResult creadas con 'express-validator',
-    validamos que los elementos que viene en el body existan, se llamen de la forma correcta y
-    sean del tipo correcto. NOTEN que es necesario que vengan todos los datos para realizar la modificación*/
-    body('id').exists().isNumeric(), 
-    body('Nombre').exists().isLength({ min: 3 }),
-    body('Apellido').exists().isLength({ min: 3 }),
-    body('Edad').exists().isNumeric(), 
-    body('Mail').exists().isEmail(), 
-    body('Celular').exists().isNumeric(),  
-    (request,response)=>{
-        
-        /*En la variable errors guardamos con ayuda de  validationResult los resultados de las validaciones,
-     si se mando mal algún dato, lo guarda en errors, sino errors está vacío */ 
-        const errors = validationResult(request);
+const actualizarPersona = [  
 
-        //Si errors NO está vacío, es decir, encontró algún error en la validación
-        if (!errors.isEmpty()) {
-            //manda como respuesta un array con los errores localizados
-            return response.status(400).json({ errors: errors.array() });
-          }
+    /*Todo esto se ejecuta solo si los datos fueron validados. Es decir, validarDatos dentro de
+/validator/personas.js continuó con  next() */
+
+    (request,response)=>{
 
     //Si no encontró ningún error en la validación entonces:
     /*recupero el id de la persona haciendo un de-structur. La idea es crear una variable llamada id, 
@@ -185,9 +139,7 @@ const actualizarPersona = [
     
     //Mando en la respuesta la persona con los datos modificados
     response.json(personaAModificar)
-    
-    
-    } 
+} 
      else{
          //Si el id no existe, mando el mensaje
          response.status(410).json({error: "Este id no existe"});
@@ -207,8 +159,7 @@ const eliminarPersona = [(request,response)=>{
 
       //Mando en mi respuesta el id de la persona eliminada
       response.json(id);
-
-     }
+ }
      else {
          //Sino el id no existe, mando el mensaje
          response.status(410).json({error: "Este id no existe"});;
