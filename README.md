@@ -2,4 +2,4 @@ Este repositorio es una pequeña parte de un Tutorial completo de la creación e
 
 Te comparto el link para que vayas a ver el tutorial completo!
 
---->>>[LINK](https://github.com/RobertoPeredo/REST-API)
+--->>>[LINK](https://robertoperedo.github.io/REST_API/#)
